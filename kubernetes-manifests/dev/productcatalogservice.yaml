@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: productcatalogservice
+  namespace: dev
 spec:
   selector:
     matchLabels:
@@ -15,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: {{ IMAGE }}
+        image: moebius5/productcatalogservice:latest
         ports:
         - containerPort: 3550
         env:

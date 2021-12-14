@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: currencyservice
-  namespace: dev
+  namespace: prod
 spec:
   selector:
     matchLabels:
