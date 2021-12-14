@@ -29,7 +29,7 @@ jobs:
         id: frontend_build
         uses: docker/build-push-action@v2
         with:
-          context: /src/frontend
+          context: ./src/frontend
           file: ./src/frontend/Dockerfile
           push: true
           tags: moebius5/frontend:latest
@@ -38,7 +38,7 @@ jobs:
         id: productcatalogservice_build
         uses: docker/build-push-action@v2
         with:
-          context: /src/productcatalogservice
+          context: ./src/productcatalogservice
           file: ./src/productcatalogservice/Dockerfile
           push: true
           tags: moebius5/productcatalogservice:latest 
@@ -47,7 +47,7 @@ jobs:
         id: currencyservice_build
         uses: docker/build-push-action@v2
         with:
-          context: /src/currencyservice
+          context: ./src/currencyservice
           file: ./src/currencyservice/Dockerfile
           push: true
           tags: moebius5/currencyservice:latest
@@ -56,7 +56,7 @@ jobs:
         id: adservice_build
         uses: docker/build-push-action@v2
         with:
-          context: /src/adservice
+          context: ./src/adservice
           file: ./src/adservice/Dockerfile
           push: true
           tags: moebius5/adservice:latest
