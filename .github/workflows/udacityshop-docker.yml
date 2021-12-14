@@ -41,7 +41,7 @@ jobs:
           context: /src/productcatalogservice
           file: ./src/productcatalogservice/Dockerfile
           push: true
-          tags: moebius5/productcatalogservice:latest
+          tags: moebius5/productcatalogservice:latest 
       -
         name: Build and push latest
         id: currencyservice_build
