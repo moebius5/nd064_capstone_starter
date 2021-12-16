@@ -17,9 +17,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: name/app
-          tags: |
-            type=sha
+          images: |
+            moebius5/frontend
+            moebius5/productcatalogservice
+            moebius5/currencyservice
+            moebius5/adservice
+          tags: type=sha
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
