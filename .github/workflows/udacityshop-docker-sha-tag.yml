@@ -17,7 +17,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: {}
+          images: ""
           tags: type=sha
       -
         name: Set up QEMU
