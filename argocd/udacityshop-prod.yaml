@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: udacityshop-prod
+  namespace: argocd
+spec:
+  destination:
+    namespace: dev
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: kubernetes-manifests/prod
+    repoURL: https://github.com/moebius5/nd064_capstone_starter
+    targetRevision: HEAD
+  syncPolicy: manual
