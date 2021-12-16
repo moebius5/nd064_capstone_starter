@@ -17,11 +17,6 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: |
-            moebius5/frontend
-            moebius5/productcatalogservice
-            moebius5/currencyservice
-            moebius5/adservice
           tags: type=sha
       -
         name: Set up QEMU
@@ -43,8 +38,8 @@ jobs:
           context: ./src/frontend
           file: ./src/frontend/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: moebius5/frontend:${{ steps.meta.outputs.tags }}
+          labels: moebius5/frontend:${{ steps.meta.outputs.labels }}
       -
         name: Build and push latest
         id: productcatalogservice_build
@@ -53,8 +48,8 @@ jobs:
           context: ./src/productcatalogservice
           file: ./src/productcatalogservice/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: moebius5/productcatalogservice:${{ steps.meta.outputs.tags }}
+          labels: moebius5/productcatalogservice:${{ steps.meta.outputs.labels }}
       -
         name: Build and push latest
         id: currencyservice_build
@@ -63,8 +58,8 @@ jobs:
           context: ./src/currencyservice
           file: ./src/currencyservice/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: moebius5/currencyservice:${{ steps.meta.outputs.tags }}
+          labels: moebius5/currencyservice:${{ steps.meta.outputs.labels }}
       -
         name: Build and push latest
         id: adservice_build
@@ -73,5 +68,5 @@ jobs:
           context: ./src/adservice
           file: ./src/adservice/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: moebius5/adservice:${{ steps.meta.outputs.tags }}
+          labels: moebius5/adservice:${{ steps.meta.outputs.labels }}
