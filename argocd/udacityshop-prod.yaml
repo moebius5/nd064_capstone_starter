@@ -12,4 +12,5 @@ spec:
     path: kubernetes-manifests/prod
     repoURL: https://github.com/moebius5/nd064_capstone_starter
     targetRevision: HEAD
-  syncPolicy: manual
+  syncPolicy: 
+    manual: {}
