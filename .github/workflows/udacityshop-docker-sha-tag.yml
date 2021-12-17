@@ -6,7 +6,7 @@ on:
       - 'master'
 
 jobs:
-  docker:
+  docker-frontend:
     runs-on: ubuntu-latest
     steps:
       -
@@ -41,7 +41,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  docker2:
+  docker-productcatalogservice:
     runs-on: ubuntu-latest
     steps:
       -
@@ -76,7 +76,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  docker3:
+  docker-currencyservice:
     runs-on: ubuntu-latest
     steps:
       -
@@ -111,7 +111,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  docker4:
+  docker-adservice:
     runs-on: ubuntu-latest
     steps:
       -
