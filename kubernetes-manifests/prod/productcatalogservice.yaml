@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: moebius5/productcatalogservice:latest
+        image: moebius5/productcatalogservice:sha-1614b5a
         ports:
         - containerPort: 3550
         env:
