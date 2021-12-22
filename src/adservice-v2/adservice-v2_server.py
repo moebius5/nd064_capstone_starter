@@ -17,7 +17,7 @@ logger = getJSONLogger('adservice-v2-server')
 
 class AdServiceV2():
     # TODO:
-    # Implemet the Ad service business logic
+    # Implement the Ad service business logic
 
     # Uncomment to enable the HealthChecks for the Ad service
     # Note: These are needed for the liveness and readiness probes
