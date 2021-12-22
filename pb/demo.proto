@@ -97,6 +97,10 @@ service AdService {
     rpc GetAds(AdRequest) returns (AdResponse) {}
 }
 
+service AdService2 {
+    rpc GetAds(AdRequest) returns (AdResponse) {}
+}
+
 message AdRequest {
     // List of important key words from the current page describing the context.
     repeated string context_keys = 1;
