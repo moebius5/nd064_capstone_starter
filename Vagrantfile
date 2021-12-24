@@ -9,6 +9,9 @@ Vagrant.configure("2") do |config|
   # st the static IP for the vagrant box
   config.vm.network "private_network", ip: "192.168.50.4"
 
+  # portforwarding towards productcatalogservice for gRPC testing
+  config.vm.network "forwarded_port", guest: 30550, host: 30550
+
   # consifure the parameters for VirtualBox provider
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "8192"
