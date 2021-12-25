@@ -53,7 +53,8 @@ def getProductsMap():
     """
     Makes a call to the productcatalogservice for a list of all products
     """
-    channel = grpc.insecure_channel("productcatalogservice:3550")
+    channel = grpc.insecure_channel("localhost:30550")
+    #channel = grpc.insecure_channel("productcatalogservice:3550")
     stub = demo_pb2_grpc.ProductCatalogServiceStub(channel)
     try:
         response = stub.ListProducts(demo_pb2.Empty())
