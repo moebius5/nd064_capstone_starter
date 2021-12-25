@@ -111,7 +111,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  docker-adservice:
+  docker-adservice-v2:
     runs-on: ubuntu-latest
     steps:
       -
@@ -122,7 +122,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: moebius5/adservice
+          images: moebius5/adservice-v2
           tags: type=sha
       -
         name: Set up QEMU
@@ -138,11 +138,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push latest
-        id: adservice_build
+        id: adservice-v2_build
         uses: docker/build-push-action@v2
         with:
-          context: ./src/adservice
-          file: ./src/adservice/Dockerfile
+          context: ./src/adservice-v2
+          file: ./src/adservice-v2/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
