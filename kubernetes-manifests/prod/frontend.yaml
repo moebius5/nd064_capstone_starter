@@ -15,7 +15,7 @@ spec:
       serviceAccountName: default
       containers:
         - name: server
-          image: moebius5/frontend:sha-b8eecf9
+          image: moebius5/frontend:sha-b38b7b9
           ports:
           - containerPort: 8080
           readinessProbe:

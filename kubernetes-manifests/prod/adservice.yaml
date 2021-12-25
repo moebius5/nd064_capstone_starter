@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: adservice
+  annotations:
+    sidecar.jaegertracing.io/inject: "true"
   namespace: prod
 spec:
   selector:
@@ -16,7 +18,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: moebius5/adservice-v2:sha-b8eecf9
+        image: moebius5/adservice-v2:sha-b38b7b9
         ports:
         - containerPort: 9556
         env:
