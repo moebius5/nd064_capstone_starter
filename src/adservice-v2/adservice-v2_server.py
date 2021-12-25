@@ -22,17 +22,17 @@ class AdServiceV2(demo_pb2_grpc.AdService2Servicer):
     # Implement the Ad service business logic
     def GetAds(self, request, context):
         logger.info("Got request for getting Ads")
-        allAds = getAdsMap()
-        ads = getAdsByCategory(allAds, request.context_keys)
-        if not ads:
-            ads = getRandomAd(allAds)
-
-        # reformat ads dictionary to protobuffer ads objects and return the final result
+        all_products = getProductsMap()
+        products = getProductsByCategory(all_products, request.context_keys)
+        if not products:
+            products = getRandomProduct(all_products)
+        if not products:
+            return demo_pb2.Empty()
         result = demo_pb2.AdResponse()
-        for ad in ads:
+        for product in products:
             result.ads.append(
                 demo_pb2.Ad(
-                    redirect_url = "/product/" + ad["id"],
+                    redirect_url = "/product/" + product.id,
                     text = "AdV2 - Items with 25% discount!"
                 )
             )
@@ -49,67 +49,46 @@ class AdServiceV2(demo_pb2_grpc.AdService2Servicer):
             status=health_pb2.HealthCheckResponse.UNIMPLEMENTED)
 
 
-def getAdsMap():
-    adsMap = [
-        {
-            "id": "OLJCESPC7Z",
-            "name": "Vintage Typewriter",
-            "description": "This typewriter looks good in your living room.",
-            "picture": "/static/img/products/typewriter.jpg",
-            "priceUsd": {
-                "currencyCode": "USD",
-                "units": 67,
-                "nanos": 990000000
-            },
-            "categories": ["vintage"]
-        },
-        {
-            "id": "66VCHSJNUP",
-            "name": "Vintage Camera Lens",
-            "description": "You won't have a camera to use it and it probably doesn't work anyway.",
-            "picture": "/static/img/products/camera-lens.jpg",
-            "priceUsd": {
-                "currencyCode": "USD",
-                "units": 12,
-                "nanos": 490000000
-            },
-            "categories": ["photography", "vintage"]
-        },
-        {
-            "id": "1YMWWN1N4O",
-            "name": "Home Barista Kit",
-            "description": "Always wanted to brew coffee with Chemex and Aeropress at home?",
-            "picture": "/static/img/products/barista-kit.jpg",
-            "priceUsd": {
-                "currencyCode": "USD",
-                "units": 124
-            },
-            "categories": ["cookware"]
-        }
-    ]
-    return adsMap
+def getProductsMap():
+    """
+    Makes a call to the productcatalogservice for a list of all products
+    """
+    channel = grpc.insecure_channel("productcatalogservice:3550")
+    stub = demo_pb2_grpc.ProductCatalogServiceStub(channel)
+    try:
+        response = stub.ListProducts(demo_pb2.Empty())
+        products = response.products
+    except grpc.RpcError as rpc_error:
+        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+            products = []
+            logger.warning("productcatalogservice service is unavailable")
+        else:
+            products = []
+            logger.warning(f"Received gRPC error: code={rpc_error.code()} message={rpc_error.details()}")
+    return products
 
 
-def getAdsByCategory(adsMap, searchCategoriesList):
+def getProductsByCategory(all_products, search_categories_list):
     """
-    Returns the list of ads by specified search category
+    Returns the list of products by specified search category
     """
-    ads = []
-    for ad in adsMap:
-        for searchCategory in searchCategoriesList:
-            for category in ad['categories']:
-                if category == searchCategory:
-                    ads.append(ad)
-    return ads
+    search_products = []
+    for product in all_products:
+        for search_category in search_categories_list:
+            for category in product.categories:
+                if category == search_category:
+                    search_products.append(product)
+    return search_products
 
 
-def getRandomAd(adsMap):
+def getRandomProduct(all_products):
     """
-    Returns randomly selected Ad from all Ads
+    Returns randomly selected product from all products
     """
-    ads = []
-    ads.append(adsMap[random.randrange(len(adsMap))])
-    return ads
+    if not all_products:
+        return []
+    return [all_products[random.randrange(len(all_products))]]
+
 
 if __name__ == "__main__":
     logger.info("initializing adservice-v2")
@@ -125,6 +104,7 @@ if __name__ == "__main__":
     # enabling reflection service
     SERVICE_NAMES = (
         demo_pb2.DESCRIPTOR.services_by_name['AdService2'].full_name,
+        health_pb2.DESCRIPTOR.services_by_name['Health'].full_name,
         reflection.SERVICE_NAME,
     )
     reflection.enable_server_reflection(SERVICE_NAMES, server)
