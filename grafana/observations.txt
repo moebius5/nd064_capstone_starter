@@ -5,5 +5,5 @@ Java Ad service:
     memory: {{ 125 Mil }}
 
 Python Ad service:
-    CPU: {{ insert value }}
-    memory: {{ insert value }}
+    CPU: {{ 0.010 }}
+    memory: {{ 19.1 Mil }}
