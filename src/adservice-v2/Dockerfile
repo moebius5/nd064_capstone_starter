@@ -12,3 +12,9 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.3.6 && \
 
 
 # TODO: Place Dockerfile instructions below
+WORKDIR .
+COPY requirements.txt requirements.txt
+RUN python -m pip install --upgrade pip
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["python", "./adservice-v2_server.py"]
