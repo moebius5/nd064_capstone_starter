@@ -17,4 +17,5 @@ COPY requirements.txt requirements.txt
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 COPY . .
+EXPOSE 9556
 CMD ["python", "./adservice-v2_server.py"]
