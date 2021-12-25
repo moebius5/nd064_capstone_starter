@@ -12,9 +12,28 @@ import demo_pb2_grpc
 from grpc_health.v1 import health_pb2
 from grpc_health.v1 import health_pb2_grpc
 from grpc_reflection.v1alpha import reflection
+from jaeger_client import Config
+from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 
 from logger import getJSONLogger
 logger = getJSONLogger('adservice-v2-server')
+
+
+def init_tracer(service):
+    config = Config(
+        config={
+            "sampler": {"type": "const", "param": 1},
+            "logging": True,
+            "reporter_batch_size": 1,
+        },
+        service_name=service,
+        validate=True,
+        metrics_factory=PrometheusMetricsFactory(service_name_label=service),
+    )
+    # this call also sets opentracing.tracer
+    return config.initialize_tracer()
+
+tracer = init_tracer("Ad-V2-service")
 
 
 class AdServiceV2(demo_pb2_grpc.AdService2Servicer):
@@ -22,21 +41,35 @@ class AdServiceV2(demo_pb2_grpc.AdService2Servicer):
     # Implement the Ad service business logic
     def GetAds(self, request, context):
         logger.info("Got request for getting Ads")
-        all_products = getProductsMap()
-        products = getProductsByCategory(all_products, request.context_keys)
-        if not products:
-            products = getRandomProduct(all_products)
-        if not products:
-            return demo_pb2.Empty()
-        result = demo_pb2.AdResponse()
-        for product in products:
-            result.ads.append(
-                demo_pb2.Ad(
-                    redirect_url = "/product/" + product.id,
-                    text = "AdV2 - Items with 25% discount!"
+        with tracer.start_span('GetAdsSpan') as span1:
+            span1.set_tag('context_keys', str(request.context_keys))
+            span1.log_kv({"event:": "serving GetAds request", "context_keys": str(request.context_keys)})
+            with tracer.start_span('getProductsMapSpan', child_of=span1) as span2:
+                span2.log_kv({"event:": "getting the list of all products"})
+                all_products = getProductsMap()
+            with tracer.start_span('getProductsByCategorySpan', child_of=span1) as span3:
+                span3.log_kv({"event:": "fetching all products with categories: " + str(request.context_keys)})
+                products = getProductsByCategory(all_products, request.context_keys)
+            if not products:
+                with tracer.start_span('getRandomProductSpan', child_of=span1) as span4:
+                    span4.log_kv({"event:": "fetching random product"})
+                    products = getRandomProduct(all_products)
+            if not products:
+                logger.info("No products received, return empty response")
+                span1.set_tag('response', 'Empty')
+                span1.log_kv({"event:": "no products received, return empty response"})
+                return demo_pb2.Empty()
+            result = demo_pb2.AdResponse()
+            for product in products:
+                result.ads.append(
+                    demo_pb2.Ad(
+                        redirect_url = "/product/" + product.id,
+                        text = "AdV2 - Items with 25% discount!"
+                    )
                 )
-            )
-        return result
+            span1.set_tag('response', 'Success')
+            span1.log_kv({"event:": "returning the resulting Ads list"})
+            return result
 
     # Uncomment to enable the HealthChecks for the Ad service
     # Note: These are needed for the liveness and readiness probes
