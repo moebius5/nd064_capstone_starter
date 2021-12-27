@@ -31,7 +31,7 @@ frontend:
   image:
     repository: moebius5/frontend
     tag:  sha-b38b7b9
-  envPortValue: "adservice:9556"
+  envPortValue: '"adservice:9556"'
   ports:
     nodePort: 30038
 

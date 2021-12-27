@@ -6,10 +6,10 @@ adservice:
   envPortValue: "9555"
   readinessProbe:
     exec:
-      command: ["/bin/grpc_health_probe", "-addr=:9555"]
+      command: '["/bin/grpc_health_probe", "-addr=:9555"]'
   livenessProbe:
     exec:
-      command: ["/bin/grpc_health_probe", "-addr=:9555"]
+      command: '["/bin/grpc_health_probe", "-addr=:9555"]'
   service:
     port: 9555
     targetPort: 9555
