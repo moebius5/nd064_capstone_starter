@@ -3,7 +3,7 @@ adservice:
     repository: moebius5/adservice
     tag:  latest
   containerPort: 9555
-  envPortValue: "9555"
+  envPortValue: '"9555"'
   readinessProbe:
     exec:
       command: '["/bin/grpc_health_probe", "-addr=:9555"]'
@@ -29,7 +29,7 @@ frontend:
   image:
     repository: moebius5/frontend
     tag:  latest
-  envPortValue: "adservice:9555"
+  envPortValue: '"adservice:9555"'
   ports:
     nodePort: 30039
 
