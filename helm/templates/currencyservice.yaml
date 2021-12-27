@@ -19,16 +19,16 @@ spec:
         image: {{ .Values.currencyservice.image.repository }}:{{ .Values.currencyservice.image.tag }}
         ports:
         - name: grpc
-          containerPort: 7000
+          containerPort: {{ .Values.currencyservice.containerPort }}
         env:
         - name: PORT
-          value: "7000"
+          value: {{ .Values.currencyservice.envPortValue }}
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:7000"]
+            command: {{ .Values.currencyservice.readinessProbe.exec.command }}
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:7000"]
+            command: {{ .Values.currencyservice.livenessProbe.exec.command }}
         resources:
           requests:
             cpu: 100m
@@ -48,5 +48,5 @@ spec:
     app: currencyservice
   ports:
   - name: grpc
-    port: 7000
-    targetPort: 7000
+    port: {{ .Values.currencyservice.service.port }}
+    targetPort: {{ .Values.currencyservice.service.targetPort }}

@@ -25,6 +25,17 @@ currencyservice:
   image:
     repository: moebius5/currencyservice
     tag:  sha-b38b7b9
+  containerPort: 7000
+  envPortValue: '"7000"'
+  readinessProbe:
+    exec:
+      command: '["/bin/grpc_health_probe", "-addr=:7000"]'
+  livenessProbe:
+    exec:
+      command: '["/bin/grpc_health_probe", "-addr=:7000"]'
+  service:
+    port: 7000
+    targetPort: 7000
 
 
 frontend:
