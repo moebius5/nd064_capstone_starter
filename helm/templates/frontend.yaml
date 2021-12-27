@@ -42,7 +42,7 @@ spec:
           - name: CURRENCY_SERVICE_ADDR
             value: "currencyservice:7000"
           - name: AD_SERVICE_ADDR
-            value: {{ .Values.frontend.envPortValue }}
+            value: {{ .Values.frontend.envPortValue | quote }}
           resources:
             requests:
               cpu: 100m

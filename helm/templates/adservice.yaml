@@ -21,7 +21,7 @@ spec:
         - containerPort: {{ .Values.adservice.containerPort }}
         env:
         - name: PORT
-          value: {{ .Values.adservice.envPortValue }}
+          value: {{ .Values.adservice.envPortValue | quote }}
         resources:
           requests:
             cpu: 200m
