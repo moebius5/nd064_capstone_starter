@@ -1,0 +1,38 @@
+adservice:    
+  image:
+    repository: moebius5/adservice
+    tag:  latest
+  containerPort: 9555
+  envPortValue: "9555"
+  readinessProbe:
+    exec:
+      command: ["/bin/grpc_health_probe", "-addr=:9555"]
+  livenessProbe:
+    exec:
+      command: ["/bin/grpc_health_probe", "-addr=:9555"]
+  service:
+    port: 9555
+    targetPort: 9555
+
+
+
+
+
+
+currencyservice:
+  image:
+    repository: moebius5/currencyservice
+    tag:  latest
+
+
+frontend:
+  image:
+    repository: moebius5/frontend
+    tag:  latest
+  envPortValue: "adservice:9555"
+
+
+productcatalogservice:
+  image:
+    repository: moebius5/productcatalogservice
+    tag:  latest

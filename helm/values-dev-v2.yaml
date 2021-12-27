@@ -1,0 +1,38 @@
+namespace:
+  name: dev-v2
+
+
+adservice:
+  image:
+    repository: moebius5/adservice
+    tag:  sha-b38b7b9
+  containerPort: 9556
+  envPortValue: "9556"
+  readinessProbe:
+    exec:
+      command: ["/bin/grpc_health_probe", "-addr=:9556"]
+  livenessProbe:
+    exec:
+      command: ["/bin/grpc_health_probe", "-addr=:9556"]
+  service:
+    port: 9556
+    targetPort: 9556
+
+
+currencyservice:
+  image:
+    repository: moebius5/currencyservice
+    tag:  sha-b38b7b9
+
+
+frontend:
+  image:
+    repository: moebius5/frontend
+    tag:  sha-b38b7b9
+  envPortValue: "adservice:9556"
+
+
+productcatalogservice:
+  image:
+    repository: moebius5/productcatalogservice
+    tag:  sha-b38b7b9

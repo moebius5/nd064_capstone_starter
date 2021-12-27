@@ -1,0 +1,8 @@
+apiVersion: v1
+name: udacityshop
+keywords:
+- udacityshop
+version: 1.0.0
+maintainers:
+- name: Muhammet Berdimyradov
+  email: muhamed.berdimuradov@gmail.com
