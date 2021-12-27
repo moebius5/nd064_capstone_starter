@@ -3,6 +3,10 @@ kind: Deployment
 metadata:
   name: adservice
   namespace: {{ .Values.namespace.name }}
+{{- if .Values.adservice.annotations }}
+  annotations:
+{{ toYaml .Values.adservice.annotations | indent 4 }}
+{{- end }}
 spec:
   selector:
     matchLabels:

@@ -3,6 +3,8 @@ namespace:
 
 
 adservice:
+  annotations:
+    sidecar.jaegertracing.io/inject: "true"
   image:
     repository: moebius5/adservice-v2
     tag:  sha-b38b7b9

@@ -3,6 +3,8 @@ namespace:
 
 
 adservice:
+  annotations:
+    sidecar.jaegertracing.io/inject: "true"
   image:
     repository: moebius5/adservice-v2
     tag:  sha-b38b7b9
@@ -10,10 +12,10 @@ adservice:
   envPortValue: "9556"
   readinessProbe:
     exec:
-      command: ["/bin/grpc_health_probe", "-addr=:9556"]
+      command: '["/bin/grpc_health_probe", "-addr=:9556"]'
   livenessProbe:
     exec:
-      command: ["/bin/grpc_health_probe", "-addr=:9556"]
+      command: '["/bin/grpc_health_probe", "-addr=:9556"]'
   service:
     port: 9556
     targetPort: 9556
