@@ -42,8 +42,15 @@ frontend:
   image:
     repository: moebius5/frontend
     tag:  sha-b38b7b9
-  envPortValue: '"adservice:9556"'
+  containerPort: 8080
+  httpGetport: 8080
+  envPortValue: '"8080"'
+  envProductcatalogserviceAddr: '"productcatalogservice:3550"'
+  envCurrencyserviceAddr: '"currencyservice:7000"'
+  envAdserviceAddr: '"adservice:9556"'
   ports:
+    port: 80
+    targetPort: 8080
     nodePort: 30038
 
 

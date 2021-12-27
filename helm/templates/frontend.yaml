@@ -17,12 +17,12 @@ spec:
         - name: server
           image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
           ports:
-          - containerPort: 8080
+          - containerPort: {{ .Values.frontend.containerPort }}
           readinessProbe:
             initialDelaySeconds: 10
             httpGet:
               path: "/_healthz"
-              port: 8080
+              port: {{ .Values.frontend.httpGetport }}
               httpHeaders:
               - name: "Cookie"
                 value: "shop_session-id=x-readiness-probe"
@@ -30,19 +30,19 @@ spec:
             initialDelaySeconds: 10
             httpGet:
               path: "/_healthz"
-              port: 8080
+              port: {{ .Values.frontend.httpGetport }}
               httpHeaders:
               - name: "Cookie"
                 value: "shop_session-id=x-liveness-probe"
           env:
           - name: PORT
-            value: "8080"
-          - name: PRODUCT_CATALOG_SERVICE_ADDR
-            value: "productcatalogservice:3550"
-          - name: CURRENCY_SERVICE_ADDR
-            value: "currencyservice:7000"
-          - name: AD_SERVICE_ADDR
             value: {{ .Values.frontend.envPortValue }}
+          - name: PRODUCT_CATALOG_SERVICE_ADDR
+            value: {{ .Values.frontend.envProductcatalogserviceAddr }}
+          - name: CURRENCY_SERVICE_ADDR
+            value: {{ .Values.frontend.envCurrencyserviceAddr }}
+          - name: AD_SERVICE_ADDR
+            value: {{ .Values.frontend.envAdserviceAddr }}
           resources:
             requests:
               cpu: 100m
@@ -62,8 +62,8 @@ spec:
     app: frontend
   ports:
   - name: http
-    port: 80
-    targetPort: 8080
+    port: {{ .Values.frontend.ports.port }}
+    targetPort: {{ .Values.frontend.ports.targetPort }}
 ---
 apiVersion: v1
 kind: Service
@@ -75,9 +75,9 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 80
+    port: {{ .Values.frontend.ports.port }}
     protocol: TCP
-    targetPort: 8080
+    targetPort: {{ .Values.frontend.ports.targetPort }}
     nodePort: {{ .Values.frontend.ports.nodePort }}
   selector:
     app: frontend
