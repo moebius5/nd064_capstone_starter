@@ -30,6 +30,8 @@ frontend:
     repository: moebius5/frontend
     tag:  latest
   envPortValue: "adservice:9555"
+  ports:
+    nodePort: 30039
 
 
 productcatalogservice:

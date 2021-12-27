@@ -9,7 +9,10 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: kubernetes-manifests/dev-v2
+    helm:
+      valueFiles:
+      - values-dev-v2.yaml
+    path: helm
     repoURL: https://github.com/moebius5/nd064_capstone_starter
     targetRevision: HEAD
   syncPolicy: 
