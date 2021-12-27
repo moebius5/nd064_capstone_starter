@@ -58,3 +58,14 @@ productcatalogservice:
   image:
     repository: moebius5/productcatalogservice
     tag:  sha-b38b7b9
+  containerPort: 3550
+  envPortValue: '"3550"'
+  readinessProbe:
+    exec:
+      command: '["/bin/grpc_health_probe", "-addr=:3550"]'
+  livenessProbe:
+    exec:
+      command: '["/bin/grpc_health_probe", "-addr=:3550"]'
+  service:
+    port: 3550
+    targetPort: 3550
